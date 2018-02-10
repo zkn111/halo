@@ -539,11 +539,13 @@ class Model extends React.Component {
         this.state.config.btns = bucketConfig.btns;
         this.state.config.table = bucketConfig.table;
         this.tableColRender(config.table.column);
+
         this.setState({
           breadcrumb: []
         });
         this.refresh({
-          tableLoading: true
+          tableLoading: true,
+          clearState: true
         });
         break;
       case 'bucket':
@@ -643,7 +645,7 @@ class Model extends React.Component {
               let resultTime = (expire - now) / 1000;
               let residueDay = Math.floor(resultTime / (24 * 60 * 60)) || '-';
               let residueHour = Math.floor(resultTime % (24 * 60 * 60) / (60 * 60));
-              item.expire_time = residueDay + __.day + residueHour + __.times;
+              item.expire_time = residueDay === '-' ? residueHour + __.times : residueDay + __.day + residueHour + __.times;
               item.residueDay = residueDay;
               this.setState({
                 dataContent: dataContent

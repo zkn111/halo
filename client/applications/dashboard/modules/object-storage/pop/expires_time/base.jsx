@@ -62,7 +62,9 @@ class ModalBase extends React.Component {
       let start = new Date();
       let nowTime = start.getTime();
       let expireTimes = this.state.startTime;
-      let setExpireTimes = expireTimes.getTime();
+      expireTimes = expireTimes.toString().indexOf('08:00:00') > -1 ? expireTimes.toString().replace('08:00:00', '00:00:00') : expireTimes;
+      let utcexpireTimes = Date.parse(expireTimes);
+      let setExpireTimes = utcexpireTimes;
       let total = (setExpireTimes - nowTime) / 1000;
       let day = Math.floor(total / (24 * 60 * 60));
       let hour = Math.floor(total % (24 * 60 * 60) / (60 * 60));
@@ -94,13 +96,15 @@ class ModalBase extends React.Component {
       showKey: false
     }, () => {
       let expireTimes = this.state.startTime;
+      expireTimes = expireTimes.toString().indexOf('08:00:00') > -1 ? expireTimes.toString().replace('08:00:00', '00:00:00') : expireTimes;
+      let utcexpireTimes = Date.parse(expireTimes);
       let date = new Date();
       let nowhour = date.getHours() + 1;
       date.setHours(0);
       date.setMinutes(0);
       date.setSeconds(0);
       let currentDate = date.getTime();
-      let setExpireTimes = expireTimes ? expireTimes.getTime() : currentDate;
+      let setExpireTimes = expireTimes ? utcexpireTimes : currentDate;
       let expireHours = this.state.currentHour;
       let zreo = expireHours.indexOf('00');
       if(zreo === 0) {
